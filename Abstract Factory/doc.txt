@@ -1,0 +1,69 @@
+تو مثال کارخونه ماشین سازی فرض کن دوتا مدل ماشین باید بسازی با موتور و چرخ های مختلف٬ بعد ساختارش رو اینطوری میسازیم:‌
+
+// Abstract Factory Interface
+interface CarFactory {
+  createEngine: () => Engine;
+  createWheels(): Wheels;
+}
+
+این درواقع میاد یه کلاس کارخونه ماشین سازی بصورت کلی میسازه
+
+// Abstract Product Types
+interface Engine {
+  start(): string;
+}
+
+interface Wheels {
+  rotate(): string;
+}
+
+اینم میاد اون تایپ های مخصوص هرکدوم از ماشین هارو باز بصورت جنرال و کلی میسازه
+
+حالا مثلا میخوایم یه کارخونه بسازیم :‌
+
+// Concrete Factory 1
+class SedanCarFactory implements CarFactory {
+  createEngine(): Engine {
+    return new SedanEngine();
+  }
+
+  createWheels(): Wheels {
+    return new SedanWheels();
+  }
+}
+
+این از کارخونه به همراه نوع محصول
+
+class SedanEngine implements Engine {
+  start(): string {
+    return "Sedan engine started";
+  }
+}
+
+این موتور ماشین مخصوص به مدل خودش
+
+
+
+class SedanWheels implements Wheels {
+  rotate(): string {
+    return "Sedan wheels rotating";
+  }
+}
+
+اینم از چرخ ماشین مخصوص به مدل خودش
+
+
+// Usage
+function assembleCar(factory: CarFactory) {
+  const engine = factory.createEngine();
+  const wheels = factory.createWheels();
+
+  console.log(engine.start());
+  console.log(wheels.rotate());
+}
+
+const sedanFactory = new SedanCarFactory();
+const suvFactory = new SUVCarFactory();
+
+assembleCar(sedanFactory); // Output: Sedan engine started, Sedan wheels rotating
+assembleCar(suvFactory); // Output: SUV engine started, SUV wheels rotating
